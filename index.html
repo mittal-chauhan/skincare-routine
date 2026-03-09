@@ -7,33 +7,65 @@
 <link rel="manifest" href="manifest.json">
 
 <style>
+
 body{
-font-family:Arial;
-background:#f7f7f7;
-padding:30px;
-}
-
-.card{
-background:white;
+font-family:system-ui;
+background:#f4f6f8;
 padding:20px;
-border-radius:12px;
-margin-bottom:20px;
-box-shadow:0 3px 12px rgba(0,0,0,0.1);
-}
-
-li{
-margin:8px 0;
+max-width:500px;
+margin:auto;
 }
 
 h1{
 text-align:center;
 }
+
+.card{
+background:white;
+padding:18px;
+border-radius:14px;
+margin-bottom:18px;
+box-shadow:0 6px 20px rgba(0,0,0,0.08);
+}
+
+li{
+margin:10px 0;
+font-size:16px;
+}
+
+label{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+input[type="checkbox"]{
+width:18px;
+height:18px;
+}
+
+.streak{
+text-align:center;
+font-size:18px;
+margin-bottom:15px;
+}
+
+.badge{
+background:#ffe082;
+padding:6px 12px;
+border-radius:10px;
+}
+
 </style>
 </head>
 
 <body>
 
-<h1>Today's Skincare Routine</h1>
+<h1>Skincare Routine</h1>
+
+<div class="streak">
+🔥 Streak: <span id="streak">0</span> days
+</div>
 
 <div class="card">
 <h2>Morning</h2>
@@ -86,11 +118,11 @@ night=normalNight;
 function render(list,id){
 let el=document.getElementById(id);
 
-list.forEach(i=>{
+list.forEach(step=>{
 let li=document.createElement("li");
 
 li.innerHTML=`<label>
-<input type="checkbox"> ${i}
+<input type="checkbox" class="task"> ${step}
 </label>`;
 
 el.appendChild(li);
@@ -99,6 +131,25 @@ el.appendChild(li);
 
 render(morning,"morning");
 render(night,"night");
+
+
+// streak system
+
+let streak=localStorage.getItem("streak")||0;
+let lastDate=localStorage.getItem("lastDate");
+
+let todayStr=new Date().toDateString();
+
+if(lastDate!==todayStr){
+streak=parseInt(streak)+1;
+localStorage.setItem("streak",streak);
+localStorage.setItem("lastDate",todayStr);
+}
+
+document.getElementById("streak").textContent=streak;
+
+
+// service worker
 
 if('serviceWorker' in navigator){
 navigator.serviceWorker.register('sw.js');
