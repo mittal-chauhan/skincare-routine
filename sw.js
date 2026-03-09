@@ -1,20 +1,20 @@
-const cacheName="skincare-app";
+const cacheName = "skincare-v2";
 
-self.addEventListener("install",e=>{
-e.waitUntil(
-caches.open(cacheName).then(cache=>{
-return cache.addAll([
-"/",
-"/index.html"
-]);
-})
-);
+self.addEventListener("install", event => {
+  self.skipWaiting();
 });
 
-self.addEventListener("fetch",e=>{
-e.respondWith(
-caches.match(e.request).then(response=>{
-return response || fetch(e.request);
-})
-);
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.filter(key => key !== cacheName)
+            .map(key => caches.delete(key))
+      );
+    })
+  );
+});
+
+self.addEventListener("fetch", event => {
+  event.respondWith(fetch(event.request));
 });
