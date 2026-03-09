@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Skincare Routine</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body{
+font-family:Arial;
+background:#f7f7f7;
+padding:30px;
+}
+.card{
+background:white;
+padding:20px;
+border-radius:10px;
+margin-bottom:20px;
+box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+h2{margin-top:0}
+</style>
+</head>
+
+<body>
+
+<h1>Today's Skincare Routine</h1>
+
+<div class="card">
+<h2>Morning</h2>
+<ul id="morning"></ul>
+</div>
+
+<div class="card">
+<h2>Night</h2>
+<ul id="night"></ul>
+</div>
+
+<script>
+
+const repairMorning = ["Oat Cleanser","Snail Cream","Sunscreen"];
+const repairNight = ["Oat Cleanser","Peptide Serum","Snail Cream"];
+
+const brightMorning = ["Oat Cleanser","Golden Hour Serum","Snail Cream","Sunscreen"];
+const brightNight = ["Oat Cleanser","Double Shot Serum","Snail Cream"];
+
+const normalMorning = ["Oat Cleanser","Peptide Serum","Snail Cream","Sunscreen"];
+const normalNight = ["Oat Cleanser","Peptide Serum","Snail Cream"];
+
+const retinolNight = ["Oat Cleanser","Retinol Serum","Snail Cream"];
+
+let today = new Date();
+let day = today.getDate();
+let weekday = today.getDay();
+
+let morning = [];
+let night = [];
+
+if(day>=9 && day<=12){
+morning = repairMorning;
+night = repairNight;
+}
+else if(day>=13 && day<=17){
+morning = brightMorning;
+night = brightNight;
+}
+else{
+morning = normalMorning;
+
+if(weekday==2 || weekday==5){
+night = retinolNight;
+}
+else{
+night = normalNight;
+}
+}
+
+function render(list,id){
+let el=document.getElementById(id);
+list.forEach(i=>{
+let li=document.createElement("li");
+li.textContent=i;
+el.appendChild(li);
+});
+}
+
+render(morning,"morning");
+render(night,"night");
+
+</script>
+
+</body>
+</html>
